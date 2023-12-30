@@ -18,13 +18,20 @@ pip install fastcrudapi
 ## Basic Usage
 ```python
 from fastapi import FastAPI
+from fastcrudapi import CrudApiRouter
 from pydantic import BaseModel
-from fastcrudapi import InMemoryCRUDRouteBuilder
-
-class  Book(BaseModel):
-	id: int
-	name: str
 
 app = FastAPI()
-app.include_router(InMemoryCRUDRouteBuilder(schema=Book))
+
+
+class Book(BaseModel):
+    id: int
+    name: str
+
+
+book_router = CrudApiRouter(
+    prefix="/books",
+    schema=Book,
+)
+app.include_router(book_router)
 ```
