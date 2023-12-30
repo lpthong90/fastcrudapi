@@ -1,7 +1,8 @@
 from copy import deepcopy
-from typing import Any, Callable, List, Type
+from typing import Any, Callable, List, Optional, Type
 
 from fastapi import APIRouter
+from typing_extensions import Annotated, Doc
 
 from .builder import BaseCRUDRouteBuilder, InMemoryCRUDRouteBuilder
 
@@ -9,10 +10,11 @@ from .builder import BaseCRUDRouteBuilder, InMemoryCRUDRouteBuilder
 class CrudApiRouter(APIRouter):
     def __init__(
         self,
-        schema=Type,
-        create_schema=Type,
-        read_schema=Type,
-        update_schema=Type,
+        schema: Type,
+        prefix: Annotated[str, Doc("An optional path prefix for the router.")] = "",
+        create_schema: Optional[Type] = None,
+        read_schema: Optional[Type] = None,
+        update_schema: Optional[Type] = None,
         actions: set = {"create", "list", "retrieve", "update", "delete"},
         api_handler_builder: BaseCRUDRouteBuilder = InMemoryCRUDRouteBuilder(),
         pagination=None,
@@ -21,11 +23,11 @@ class CrudApiRouter(APIRouter):
     ):
         self.actions = actions
         self.schema = schema
-        self.create_schema = create_schema
-        self.read_schema = read_schema
-        self.update_schema = update_schema
+        self.create_schema = create_schema or schema
+        self.read_schema = read_schema or schema
+        self.update_schema = update_schema or schema
         self.api_handler_builder = api_handler_builder
-        super().__init__(*args, **kwargs)
+        super().__init__(prefix=prefix, *args, **kwargs)
         self._refresh_api_routes()
 
     def _refresh_api_routes(self):
