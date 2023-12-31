@@ -11,11 +11,18 @@
 The package helps to build CRUD APIs for models based on FastAPI.
 
 ## Installation
-```bash
-pip install fastcrudapi
+<div class="termy">
+
+```console
+$ pip install fastcrudapi
+---> 100%
+Successfully installed fastcrudapi fastapi sqlmodel
 ```
 
+</div>
+
 ## Basic Usage
+
 ```Python
 from fastapi import FastAPI
 from fastcrudapi import CrudApiRouter
