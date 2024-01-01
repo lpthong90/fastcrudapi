@@ -1,12 +1,9 @@
 import json
 import logging
 import os
-import re
 import shutil
 import subprocess
-from functools import lru_cache
 from http.server import HTTPServer, SimpleHTTPRequestHandler
-from importlib import metadata
 from multiprocessing import Pool
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Union
@@ -17,7 +14,6 @@ import mkdocs.config
 import mkdocs.utils
 import typer
 import yaml
-from jinja2 import Template
 
 logging.basicConfig(level=logging.INFO)
 
