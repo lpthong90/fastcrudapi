@@ -272,6 +272,7 @@ def live(
 def update_config() -> None:
     config = get_en_config()
     languages = [{"en": "/"}]
+    config["extra"] = config.get("extra", {})
     alternate: List[Dict[str, str]] = config["extra"].get("alternate", [])
     alternate_dict = {alt["link"]: alt["name"] for alt in alternate}
     new_alternate: List[Dict[str, str]] = []

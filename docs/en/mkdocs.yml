@@ -1,6 +1,6 @@
 site_name: FastCRUDAPI
 site_description: Easy way to generate crud apis for models.
-site_url: 
+site_url: null
 theme:
   name: material
   palette:
@@ -29,36 +29,38 @@ repo_name: lpthong90/fastcrudapi
 repo_url: https://github.com/lpthong90/fastcrudapi
 edit_uri: ''
 nav:
-  - FastCRUDAPI: index.md
-  - Tutorial - User Guide:
-    - tutorial/index.md
-    - tutorial/first-step.md
-    - tutorial/sqlalchemy.md
-    - tutorial/sqlmodel.md
-    - tutorial/customize.md
-  - Help FastCRUDAPI - Get Help: help.md
-
+- FastCRUDAPI: index.md
+- Tutorial - User Guide:
+  - tutorial/index.md
+  - tutorial/first-step.md
+  - tutorial/sqlalchemy.md
+  - tutorial/sqlmodel.md
+  - tutorial/customize.md
+- Help FastCRUDAPI - Get Help: help.md
 markdown_extensions:
-  - toc:
-      permalink: true
-  - markdown.extensions.codehilite:
-      guess_lang: false
-  - admonition
-  - codehilite
-  - extra
-  - pymdownx.superfences:
-      custom_fences:
-      - name: mermaid
-        class: mermaid
-        format: !!python/name:pymdownx.superfences.fence_code_format ''
-  - pymdownx.tabbed:
-      alternate_style: true
-  # - mdx_include
-
+- toc:
+    permalink: true
+- markdown.extensions.codehilite:
+    guess_lang: false
+- admonition
+- codehilite
+- extra
+- pymdownx.superfences:
+    custom_fences:
+    - name: mermaid
+      class: mermaid
+      format: !!python/name:pymdownx.superfences.fence_code_format ''
+- pymdownx.tabbed:
+    alternate_style: true
 extra_css:
-  - css/termynal.css
-  - css/custom.css
-
+- css/termynal.css
+- css/custom.css
 extra_javascript:
-  - js/termynal.js
-  - js/custom.js
+- js/termynal.js
+- js/custom.js
+extra:
+  alternate:
+  - link: /
+    name: en
+  - link: /vi/
+    name: vi
