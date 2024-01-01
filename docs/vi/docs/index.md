@@ -5,7 +5,7 @@
     <a href="https://fastcrudapi.lpthong90.com"><img src="./img/logo.png" alt="FastCRUDAPI"></a>
 </p>
 <p align="center">
-    <em>Super easy to generate CRUD api routes for FastAPI VN.</em>
+    <em>Tạo CRUD api cho model cực kỳ đơn giản cho FastAPI.</em>
 </p>
 <p align="center">
     <a href="https://github.com/lpthong90/fastcrudapi/actions?query=workflow%3ATest" target="_blank">
