@@ -5,12 +5,15 @@ from typing import Any, Callable, Dict, List, Optional, Sequence, Type, Union
 from fastapi import APIRouter, params
 from fastapi.datastructures import Default
 from fastapi.routing import APIRoute
+from fastapi.types import DecoratedCallable, IncEx
 from fastapi.utils import generate_unique_id
 from starlette.responses import JSONResponse, Response
 from starlette.routing import BaseRoute
 from starlette.types import ASGIApp, Lifespan
 
 from .builder import BaseCRUDRouteBuilder, InMemoryCRUDRouteBuilder
+
+ACTION_SETS: set = {"create", "list", "retrieve", "update", "delete"}
 
 
 class CrudApiRouter(APIRouter):
@@ -48,7 +51,7 @@ class CrudApiRouter(APIRouter):
         create_schema: Optional[Type] = None,
         read_schema: Optional[Type] = None,
         update_schema: Optional[Type] = None,
-        actions: set = {"create", "list", "retrieve", "update", "delete"},
+        actions: set = ACTION_SETS,
         api_handler_builder: BaseCRUDRouteBuilder = InMemoryCRUDRouteBuilder(),
         tags: Optional[List[Union[str, Enum]]] = None,
         dependencies: Optional[Sequence[params.Depends]] = None,
@@ -110,7 +113,10 @@ class CrudApiRouter(APIRouter):
 
         if "list" in self.actions:
             self._add_api_action_route(
-                endpoint=self.api_handler_builder.list(self.schema, self.read_schema),
+                endpoint=self.api_handler_builder.list(
+                    self.schema,
+                    self.read_schema,
+                ),
                 path="",
                 name=f"List all {self.schema.__name__.lower()}",
                 methods=["GET"],
@@ -141,7 +147,10 @@ class CrudApiRouter(APIRouter):
             )
         if "delete" in self.actions:
             self._add_api_action_route(
-                endpoint=self.api_handler_builder.delete(self.schema, self.read_schema),
+                endpoint=self.api_handler_builder.delete(
+                    self.schema,
+                    self.read_schema,
+                ),
                 path="/:id",
                 name=f"Update {self.schema.__name__.lower()} by id",
                 methods=["DELETE"],
@@ -172,25 +181,285 @@ class CrudApiRouter(APIRouter):
         self._refresh_api_routes()
         return self
 
-    def get(self, path: str, *args, **kargs):
-        self._remove_related_routes(path=self.prefix + path, methods=set(["GET"]))
-        return super().get(path=path, *args, **kargs)
+    def get(
+        self,
+        path: str,
+        *,
+        response_model: Any = Default(None),
+        status_code: Optional[int] = None,
+        tags: Optional[List[Union[str, Enum]]] = None,
+        dependencies: Optional[Sequence[params.Depends]] = None,
+        summary: Optional[str] = None,
+        description: Optional[str] = None,
+        response_description: str = "Successful Response",
+        responses: Optional[Dict[Union[int, str], Dict[str, Any]]] = None,
+        deprecated: Optional[bool] = None,
+        operation_id: Optional[str] = None,
+        response_model_include: Optional[IncEx] = None,
+        response_model_exclude: Optional[IncEx] = None,
+        response_model_by_alias: bool = True,
+        response_model_exclude_unset: bool = False,
+        response_model_exclude_defaults: bool = False,
+        response_model_exclude_none: bool = False,
+        include_in_schema: bool = True,
+        response_class: Type[Response] = Default(JSONResponse),
+        name: Optional[str] = None,
+        callbacks: Optional[List[BaseRoute]] = None,
+        openapi_extra: Optional[Dict[str, Any]] = None,
+        generate_unique_id_function: Callable[[APIRoute], str] = Default(
+            generate_unique_id
+        ),
+    ) -> Callable[[DecoratedCallable], DecoratedCallable]:
+        self._remove_related_routes(path=self.prefix + path, methods=set("GET"))
+        return super().get(
+            path=path,
+            response_model=response_model,
+            status_code=status_code,
+            tags=tags,
+            dependencies=dependencies,
+            summary=summary,
+            description=description,
+            response_description=response_description,
+            responses=responses,
+            deprecated=deprecated,
+            operation_id=operation_id,
+            response_model_include=response_model_include,
+            response_model_exclude=response_model_exclude,
+            response_model_by_alias=response_model_by_alias,
+            response_model_exclude_unset=response_model_exclude_unset,
+            response_model_exclude_defaults=response_model_exclude_defaults,
+            response_model_exclude_none=response_model_exclude_none,
+            include_in_schema=include_in_schema,
+            response_class=response_class,
+            name=name,
+            callbacks=callbacks,
+            openapi_extra=openapi_extra,
+            generate_unique_id_function=generate_unique_id_function,
+        )
 
-    def post(self, path: str, *args, **kargs):
-        self._remove_related_routes(path=self.prefix + path, methods=set(["POST"]))
-        return super().post(path=path, *args, **kargs)
+    def post(
+        self,
+        path: str,
+        *,
+        response_model: Any = Default(None),
+        status_code: Optional[int] = None,
+        tags: Optional[List[Union[str, Enum]]] = None,
+        dependencies: Optional[Sequence[params.Depends]] = None,
+        summary: Optional[str] = None,
+        description: Optional[str] = None,
+        response_description: str = "Successful Response",
+        responses: Optional[Dict[Union[int, str], Dict[str, Any]]] = None,
+        deprecated: Optional[bool] = None,
+        operation_id: Optional[str] = None,
+        response_model_include: Optional[IncEx] = None,
+        response_model_exclude: Optional[IncEx] = None,
+        response_model_by_alias: bool = True,
+        response_model_exclude_unset: bool = False,
+        response_model_exclude_defaults: bool = False,
+        response_model_exclude_none: bool = False,
+        include_in_schema: bool = True,
+        response_class: Type[Response] = Default(JSONResponse),
+        name: Optional[str] = None,
+        callbacks: Optional[List[BaseRoute]] = None,
+        openapi_extra: Optional[Dict[str, Any]] = None,
+        generate_unique_id_function: Callable[[APIRoute], str] = Default(
+            generate_unique_id
+        ),
+    ) -> Callable[[DecoratedCallable], DecoratedCallable]:
+        self._remove_related_routes(path=self.prefix + path, methods=set("POST"))
+        return super().post(
+            path=path,
+            response_model=response_model,
+            status_code=status_code,
+            tags=tags,
+            dependencies=dependencies,
+            summary=summary,
+            description=description,
+            response_description=response_description,
+            responses=responses,
+            deprecated=deprecated,
+            operation_id=operation_id,
+            response_model_include=response_model_include,
+            response_model_exclude=response_model_exclude,
+            response_model_by_alias=response_model_by_alias,
+            response_model_exclude_unset=response_model_exclude_unset,
+            response_model_exclude_defaults=response_model_exclude_defaults,
+            response_model_exclude_none=response_model_exclude_none,
+            include_in_schema=include_in_schema,
+            response_class=response_class,
+            name=name,
+            callbacks=callbacks,
+            openapi_extra=openapi_extra,
+            generate_unique_id_function=generate_unique_id_function,
+        )
 
-    def patch(self, path: str, *args, **kargs):
-        self._remove_related_routes(path=self.prefix + path, methods=set(["PATCH"]))
-        return super().patch(path=path, *args, **kargs)
+    def patch(
+        self,
+        path: str,
+        *,
+        response_model: Any = Default(None),
+        status_code: Optional[int] = None,
+        tags: Optional[List[Union[str, Enum]]] = None,
+        dependencies: Optional[Sequence[params.Depends]] = None,
+        summary: Optional[str] = None,
+        description: Optional[str] = None,
+        response_description: str = "Successful Response",
+        responses: Optional[Dict[Union[int, str], Dict[str, Any]]] = None,
+        deprecated: Optional[bool] = None,
+        operation_id: Optional[str] = None,
+        response_model_include: Optional[IncEx] = None,
+        response_model_exclude: Optional[IncEx] = None,
+        response_model_by_alias: bool = True,
+        response_model_exclude_unset: bool = False,
+        response_model_exclude_defaults: bool = False,
+        response_model_exclude_none: bool = False,
+        include_in_schema: bool = True,
+        response_class: Type[Response] = Default(JSONResponse),
+        name: Optional[str] = None,
+        callbacks: Optional[List[BaseRoute]] = None,
+        openapi_extra: Optional[Dict[str, Any]] = None,
+        generate_unique_id_function: Callable[[APIRoute], str] = Default(
+            generate_unique_id
+        ),
+    ) -> Callable[[DecoratedCallable], DecoratedCallable]:
+        self._remove_related_routes(path=self.prefix + path, methods=set("PATCH"))
+        return super().patch(
+            path=path,
+            response_model=response_model,
+            status_code=status_code,
+            tags=tags,
+            dependencies=dependencies,
+            summary=summary,
+            description=description,
+            response_description=response_description,
+            responses=responses,
+            deprecated=deprecated,
+            operation_id=operation_id,
+            response_model_include=response_model_include,
+            response_model_exclude=response_model_exclude,
+            response_model_by_alias=response_model_by_alias,
+            response_model_exclude_unset=response_model_exclude_unset,
+            response_model_exclude_defaults=response_model_exclude_defaults,
+            response_model_exclude_none=response_model_exclude_none,
+            include_in_schema=include_in_schema,
+            response_class=response_class,
+            name=name,
+            callbacks=callbacks,
+            openapi_extra=openapi_extra,
+            generate_unique_id_function=generate_unique_id_function,
+        )
 
-    def put(self, path: str, *args, **kargs):
-        self._remove_related_routes(path=self.prefix + path, methods=set(["PUT"]))
-        return super().put(path=path, *args, **kargs)
+    def put(
+        self,
+        path: str,
+        *,
+        response_model: Any = Default(None),
+        status_code: Optional[int] = None,
+        tags: Optional[List[Union[str, Enum]]] = None,
+        dependencies: Optional[Sequence[params.Depends]] = None,
+        summary: Optional[str] = None,
+        description: Optional[str] = None,
+        response_description: str = "Successful Response",
+        responses: Optional[Dict[Union[int, str], Dict[str, Any]]] = None,
+        deprecated: Optional[bool] = None,
+        operation_id: Optional[str] = None,
+        response_model_include: Optional[IncEx] = None,
+        response_model_exclude: Optional[IncEx] = None,
+        response_model_by_alias: bool = True,
+        response_model_exclude_unset: bool = False,
+        response_model_exclude_defaults: bool = False,
+        response_model_exclude_none: bool = False,
+        include_in_schema: bool = True,
+        response_class: Type[Response] = Default(JSONResponse),
+        name: Optional[str] = None,
+        callbacks: Optional[List[BaseRoute]] = None,
+        openapi_extra: Optional[Dict[str, Any]] = None,
+        generate_unique_id_function: Callable[[APIRoute], str] = Default(
+            generate_unique_id
+        ),
+    ) -> Callable[[DecoratedCallable], DecoratedCallable]:
+        self._remove_related_routes(path=self.prefix + path, methods=set("PUT"))
+        return super().put(
+            path=path,
+            response_model=response_model,
+            status_code=status_code,
+            tags=tags,
+            dependencies=dependencies,
+            summary=summary,
+            description=description,
+            response_description=response_description,
+            responses=responses,
+            deprecated=deprecated,
+            operation_id=operation_id,
+            response_model_include=response_model_include,
+            response_model_exclude=response_model_exclude,
+            response_model_by_alias=response_model_by_alias,
+            response_model_exclude_unset=response_model_exclude_unset,
+            response_model_exclude_defaults=response_model_exclude_defaults,
+            response_model_exclude_none=response_model_exclude_none,
+            include_in_schema=include_in_schema,
+            response_class=response_class,
+            name=name,
+            callbacks=callbacks,
+            openapi_extra=openapi_extra,
+            generate_unique_id_function=generate_unique_id_function,
+        )
 
-    def delete(self, path: str, *args, **kargs):
-        self._remove_related_routes(path=self.prefix + path, methods=set(["DELETE"]))
-        return super().delete(path=path, *args, **kargs)
+    def delete(
+        self,
+        path: str,
+        *,
+        response_model: Any = Default(None),
+        status_code: Optional[int] = None,
+        tags: Optional[List[Union[str, Enum]]] = None,
+        dependencies: Optional[Sequence[params.Depends]] = None,
+        summary: Optional[str] = None,
+        description: Optional[str] = None,
+        response_description: str = "Successful Response",
+        responses: Optional[Dict[Union[int, str], Dict[str, Any]]] = None,
+        deprecated: Optional[bool] = None,
+        operation_id: Optional[str] = None,
+        response_model_include: Optional[IncEx] = None,
+        response_model_exclude: Optional[IncEx] = None,
+        response_model_by_alias: bool = True,
+        response_model_exclude_unset: bool = False,
+        response_model_exclude_defaults: bool = False,
+        response_model_exclude_none: bool = False,
+        include_in_schema: bool = True,
+        response_class: Type[Response] = Default(JSONResponse),
+        name: Optional[str] = None,
+        callbacks: Optional[List[BaseRoute]] = None,
+        openapi_extra: Optional[Dict[str, Any]] = None,
+        generate_unique_id_function: Callable[[APIRoute], str] = Default(
+            generate_unique_id
+        ),
+    ) -> Callable[[DecoratedCallable], DecoratedCallable]:
+        self._remove_related_routes(path=self.prefix + path, methods=set("DELETE"))
+        return super().delete(
+            path=path,
+            response_model=response_model,
+            status_code=status_code,
+            tags=tags,
+            dependencies=dependencies,
+            summary=summary,
+            description=description,
+            response_description=response_description,
+            responses=responses,
+            deprecated=deprecated,
+            operation_id=operation_id,
+            response_model_include=response_model_include,
+            response_model_exclude=response_model_exclude,
+            response_model_by_alias=response_model_by_alias,
+            response_model_exclude_unset=response_model_exclude_unset,
+            response_model_exclude_defaults=response_model_exclude_defaults,
+            response_model_exclude_none=response_model_exclude_none,
+            include_in_schema=include_in_schema,
+            response_class=response_class,
+            name=name,
+            callbacks=callbacks,
+            openapi_extra=openapi_extra,
+            generate_unique_id_function=generate_unique_id_function,
+        )
 
     def _remove_related_routes(self, path: str, methods: set[str]):
         related_routes = filter(

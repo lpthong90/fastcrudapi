@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Type
 
 from fastapi import Depends, HTTPException, Query
 from sqlmodel import Session, select
@@ -6,35 +6,35 @@ from sqlmodel import Session, select
 
 class BaseCRUDRouteBuilder:
     """
-    `BaseCRUDRouteBuilder` class, used to wrap all logic of all CRUD operations which
-    is used in CrudApiRouter as an input.
+    `BaseCRUDRouteBuilder` class, used to wrap all logic of all CRUD operations
+    which is used in CrudApiRouter as an input.
     """
 
-    def create(self, schema, read_schema, create_schema):
+    def create(self, schema: Type, read_schema: Type, create_schema: Type):
         def route(data: create_schema) -> read_schema:
             return read_schema(**data.dict())
 
         return route
 
-    def list(self, schema, read_schema):
+    def list(self, schema: Type, read_schema: Type):
         def route() -> List[read_schema]:
             return []
 
         return route
 
-    def retrieve(self, schema, read_schema):
+    def retrieve(self, schema: Type, read_schema: Type):
         def route(id: int | str) -> read_schema:
             return {}
 
         return route
 
-    def update(self, schema, read_schema, update_schema):
+    def update(self, schema: Type, read_schema: Type, update_schema):
         def route(data: update_schema) -> read_schema:
             return schema(**data.dict())
 
         return route
 
-    def delete(self, schema, read_schema):
+    def delete(self, schema: Type, read_schema: Type):
         def route(id: int | str) -> read_schema:
             return {}
 
@@ -43,8 +43,8 @@ class BaseCRUDRouteBuilder:
 
 class InMemoryCRUDRouteBuilder(BaseCRUDRouteBuilder):
     """
-    `BaseCRUDRouteBuilder` class, used to wrap all logic of all CRUD operations which
-    is used in CrudApiRouter as an input.
+    `BaseCRUDRouteBuilder` class, used to wrap all logic of all CRUD operations
+    which is used in CrudApiRouter as an input.
 
     ## Example
 
@@ -72,8 +72,8 @@ class InMemoryCRUDRouteBuilder(BaseCRUDRouteBuilder):
 
 class SqlCRUDRouteBuilder(BaseCRUDRouteBuilder):
     """
-    `SqlCRUDRouteBuilder` class, used to wrap all logic of all CRUD operations which
-    works with `sqlmodel` to interact with sql database.
+    `SqlCRUDRouteBuilder` class, used to wrap all logic of all CRUD operations
+    which works with `sqlmodel` to interact with sql database.
 
     ## Example
 
@@ -107,9 +107,10 @@ class SqlCRUDRouteBuilder(BaseCRUDRouteBuilder):
         with Session(self.engine) as session:
             yield session
 
-    def create(self, schema, read_schema, create_schema):
+    def create(self, schema: Type, read_schema: Type, create_schema: Type):
         def route(
-            data: create_schema, session: Session = Depends(self.get_session)
+            data: create_schema,
+            session: Session = Depends(self.get_session),
         ) -> read_schema:
             db_data = schema.model_validate(data)
             session.add(db_data)
@@ -119,7 +120,7 @@ class SqlCRUDRouteBuilder(BaseCRUDRouteBuilder):
 
         return route
 
-    def list(self, schema, read_schema):
+    def list(self, schema: Type, read_schema: Type):
         def route(
             session: Session = Depends(self.get_session),
             offset: int = 0,
@@ -129,9 +130,10 @@ class SqlCRUDRouteBuilder(BaseCRUDRouteBuilder):
 
         return route
 
-    def retrieve(self, schema, read_schema):
+    def retrieve(self, schema: Type, read_schema: Type):
         def route(
-            id: int | str, session: Session = Depends(self.get_session)
+            id: int | str,
+            session: Session = Depends(self.get_session),
         ) -> read_schema:
             record = session.get(schema, id)
             if not record:
@@ -142,9 +144,11 @@ class SqlCRUDRouteBuilder(BaseCRUDRouteBuilder):
 
         return route
 
-    def update(self, schema, read_schema, update_schema):
+    def update(self, schema: Type, read_schema: Type, update_schema):
         def route(
-            id: int, data: update_schema, session: Session = Depends(self.get_session)
+            id: int,
+            data: update_schema,
+            session: Session = Depends(self.get_session),
         ) -> read_schema:
             record = session.get(schema, id)
             if not record:
@@ -161,9 +165,10 @@ class SqlCRUDRouteBuilder(BaseCRUDRouteBuilder):
 
         return route
 
-    def delete(self, schema, read_schema):
+    def delete(self, schema: Type, read_schema: Type):
         def route(
-            id: int | str, session: Session = Depends(self.get_session)
+            id: int | str,
+            session: Session = Depends(self.get_session),
         ) -> read_schema:
             record = session.get(schema, id)
             if not record:
