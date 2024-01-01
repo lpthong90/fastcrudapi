@@ -1,1 +1,6 @@
 dist
+htmlcov
+site
+__pycache__
+.coverage
+.DS_Store

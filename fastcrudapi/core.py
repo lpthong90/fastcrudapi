@@ -1,25 +1,72 @@
 from copy import deepcopy
-from typing import Any, Callable, List, Optional, Type
+from enum import Enum
+from typing import Any, Callable, Dict, List, Optional, Sequence, Type, Union
 
-from fastapi import APIRouter
-from typing_extensions import Annotated, Doc
+from fastapi import APIRouter, params
+from fastapi.datastructures import Default
+from fastapi.routing import APIRoute
+from fastapi.utils import generate_unique_id
+from starlette.responses import JSONResponse, Response
+from starlette.routing import BaseRoute
+from starlette.types import ASGIApp, Lifespan
 
 from .builder import BaseCRUDRouteBuilder, InMemoryCRUDRouteBuilder
 
 
 class CrudApiRouter(APIRouter):
+    """
+    `CrudApiRouter` class, used to create CRUD operations more faster and works
+    as an `APIRouter` in `FastAPI` app.
+
+
+    ## Example
+
+    ```python
+    from fastapi import FastAPI
+    from fastcrudapi import CrudApiRouter
+    from pydantic import BaseModel
+
+    app = FastAPI()
+
+    class User(BaseModel):
+        first_name: str
+        last_name: str
+
+    router = CrudApiRouter(
+        prefix="/users",
+        schema=User,
+    )
+
+    app.include_router(router)
+    ```
+    """
+
     def __init__(
         self,
         schema: Type,
-        prefix: Annotated[str, Doc("An optional path prefix for the router.")] = "",
+        prefix: str = "",
         create_schema: Optional[Type] = None,
         read_schema: Optional[Type] = None,
         update_schema: Optional[Type] = None,
         actions: set = {"create", "list", "retrieve", "update", "delete"},
         api_handler_builder: BaseCRUDRouteBuilder = InMemoryCRUDRouteBuilder(),
-        pagination=None,
-        *args,
-        **kwargs,
+        tags: Optional[List[Union[str, Enum]]] = None,
+        dependencies: Optional[Sequence[params.Depends]] = None,
+        default_response_class: Type[Response] = Default(JSONResponse),
+        responses: Optional[Dict[Union[int, str], Dict[str, Any]]] = None,
+        callbacks: Optional[List[BaseRoute]] = None,
+        redirect_slashes: bool = True,
+        default: Optional[ASGIApp] = None,
+        dependency_overrides_provider: Optional[Any] = None,
+        route_class: Type[APIRoute] = APIRoute,
+        on_startup: Optional[Sequence[Callable[[], Any]]] = None,
+        on_shutdown: Optional[Sequence[Callable[[], Any]]] = None,
+        lifespan: Optional[Lifespan[Any]] = None,
+        deprecated: Optional[bool] = None,
+        include_in_schema: bool = True,
+        generate_unique_id_function: Callable[[APIRoute], str] = Default(
+            generate_unique_id
+        ),
     ):
         self.actions = actions
         self.schema = schema
@@ -27,7 +74,24 @@ class CrudApiRouter(APIRouter):
         self.read_schema = read_schema or schema
         self.update_schema = update_schema or schema
         self.api_handler_builder = api_handler_builder
-        super().__init__(prefix=prefix, *args, **kwargs)
+        super().__init__(
+            prefix=prefix,
+            tags=tags,
+            dependencies=dependencies,
+            default_response_class=default_response_class,
+            responses=responses,
+            callbacks=callbacks,
+            redirect_slashes=redirect_slashes,
+            default=default,
+            dependency_overrides_provider=dependency_overrides_provider,
+            route_class=route_class,
+            on_startup=on_startup,
+            on_shutdown=on_shutdown,
+            lifespan=lifespan,
+            deprecated=deprecated,
+            include_in_schema=include_in_schema,
+            generate_unique_id_function=generate_unique_id_function,
+        )
         self._refresh_api_routes()
 
     def _refresh_api_routes(self):
@@ -108,18 +172,25 @@ class CrudApiRouter(APIRouter):
         self._refresh_api_routes()
         return self
 
-    def get(
-        self,
-        path: str,
-        *args,
-        **kargs,
-    ):
+    def get(self, path: str, *args, **kargs):
         self._remove_related_routes(path=self.prefix + path, methods=set(["GET"]))
-        return super().get(
-            path=path,
-            *args,
-            **kargs,
-        )
+        return super().get(path=path, *args, **kargs)
+
+    def post(self, path: str, *args, **kargs):
+        self._remove_related_routes(path=self.prefix + path, methods=set(["POST"]))
+        return super().post(path=path, *args, **kargs)
+
+    def patch(self, path: str, *args, **kargs):
+        self._remove_related_routes(path=self.prefix + path, methods=set(["PATCH"]))
+        return super().patch(path=path, *args, **kargs)
+
+    def put(self, path: str, *args, **kargs):
+        self._remove_related_routes(path=self.prefix + path, methods=set(["PUT"]))
+        return super().put(path=path, *args, **kargs)
+
+    def delete(self, path: str, *args, **kargs):
+        self._remove_related_routes(path=self.prefix + path, methods=set(["DELETE"]))
+        return super().delete(path=path, *args, **kargs)
 
     def _remove_related_routes(self, path: str, methods: set[str]):
         related_routes = filter(
