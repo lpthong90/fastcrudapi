@@ -12,7 +12,7 @@ jobs:
     permissions:
       contents: read
       deployments: write
-      issues: read
+      issues: write
     steps:
       - name: Dump GitHub context
         env:
