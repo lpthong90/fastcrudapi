@@ -1,6 +1,9 @@
 dist
 htmlcov
 site
+site_build
 __pycache__
 .coverage
 .DS_Store
+.ruff_cache
+.mypy_cache
