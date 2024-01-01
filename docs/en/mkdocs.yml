@@ -22,7 +22,7 @@ theme:
   - content.tabs.link
   icon:
     repo: fontawesome/brands/github-alt
-  logo: img/logo.drawio.png
+  logo: img/logo.png
   favicon: img/favicon.png
   language: en
 repo_name: lpthong90/fastcrudapi
