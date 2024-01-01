@@ -51,3 +51,14 @@ ignore = [
 
 [tool.ruff.isort]
 known-third-party = ["fastapi"]
+
+[tool.coverage.run]
+parallel = true
+source = [
+    "docs_src",
+    "tests",
+    "fastcrudapi"
+]
+context = '${CONTEXT}'
+omit = [
+]
