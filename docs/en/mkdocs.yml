@@ -52,6 +52,12 @@ markdown_extensions:
       format: !!python/name:pymdownx.superfences.fence_code_format ''
 - pymdownx.tabbed:
     alternate_style: true
+extra_css:
+- css/termynal.css
+- css/custom.css
+extra_javascript:
+- js/termynal.js
+- js/custom.js
 extra:
   social:
   - icon: fontawesome/brands/github-alt
@@ -65,15 +71,3 @@ extra:
     name: en - English
   - link: /vi/
     name: vi - Tiếng Việt
-extra_css:
-- css/termynal.css
-- css/custom.css
-extra_javascript:
-- js/termynal.js
-- js/custom.js
-extra:
-  alternate:
-  - link: /
-    name: en
-  - link: /vi/
-    name: vi
