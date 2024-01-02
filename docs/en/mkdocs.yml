@@ -52,6 +52,19 @@ markdown_extensions:
       format: !!python/name:pymdownx.superfences.fence_code_format ''
 - pymdownx.tabbed:
     alternate_style: true
+extra:
+  social:
+  - icon: fontawesome/brands/github-alt
+    link: https://github.com/lpthong90/fastcrudapi
+  - icon: fontawesome/brands/discord
+    link: https://www.linkedin.com/in/lpthong90
+  - icon: fontawesome/solid/globe
+    link: https://lpthong90.dev
+  alternate:
+  - link: /
+    name: en - English
+  - link: /vi/
+    name: vi - Tiếng Việt
 extra_css:
 - css/termynal.css
 - css/custom.css
