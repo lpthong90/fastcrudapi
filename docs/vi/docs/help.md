@@ -1,1 +1,2 @@
-# Help FastCRUDAPI - Get Help
+# Help
+Thoải mái góp ý và nhận hỗ trợ nhé. 🤝

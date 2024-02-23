@@ -1,4 +1,4 @@
-# FastCRUDAPI VN
+# FastCRUDAPI
 
 <p align="center">
     <!-- <a href="https://fastcrudapi.lpthong90.com"><img src="https://fastcrudapi.lpthong90.com/img/logo.png" alt="FastCRUDAPI"></a> -->
@@ -30,15 +30,15 @@
 
 ---
 
-**Documentation**: <a href="https://fastcrudapi.lpthong90.dev" target="_blank">https://fastcrudapi.lpthong90.dev</a>
+**Tài Liệu**: <a href="https://fastcrudapi.lpthong90.dev" target="_blank">https://fastcrudapi.lpthong90.dev</a>
 
-**Source  Code**: <a href="https://github.com/lpthong90/fastcrudapi" target="_blank">https://github.com/lpthong90/fastcrudapi</a>
+**Mã nguồn**: <a href="https://github.com/lpthong90/fastcrudapi" target="_blank">https://github.com/lpthong90/fastcrudapi</a>
 
 ---
 
-The package helps to generate CRUD APIs for models based on FastAPI.
+Thư viện giúp tạo nhóm CRUD api của model khi sử dụng FastAPI.  
 
-## Installation
+## Cài Đặt
 <div class="termy">
 
 ```console
@@ -49,7 +49,7 @@ Successfully installed fastcrudapi
 
 </div>
 
-## Basic Usage
+## Sử dụng
 
 ```Python
 from fastapi import FastAPI
@@ -77,6 +77,6 @@ app.include_router(book_router)
     <img src="https://fastcrudapi.lpthong90.dev/img/openapi.png" alt="OpenAPI">
 </p>
 
-## License
+## Bản quyền
 
-This project is licensed under the terms of the [MIT license](https://github.com/lpthong90/fastcrudapi/blob/main/LICENSE).
+Dự án sử dụng bản quyền [MIT license](https://github.com/lpthong90/fastcrudapi/blob/main/LICENSE).

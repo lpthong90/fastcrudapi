@@ -30,12 +30,12 @@ repo_url: https://github.com/lpthong90/fastcrudapi
 edit_uri: ''
 nav:
 - FastCRUDAPI: index.md
-- Tutorial - User Guide:
-  - tutorial/index.md
-  - tutorial/first-step.md
-  - tutorial/sqlalchemy.md
-  - tutorial/sqlmodel.md
-  - tutorial/customize.md
+#- Tutorial - User Guide:
+#  - tutorial/index.md
+#  - tutorial/first-step.md
+#  - tutorial/sqlalchemy.md
+#  - tutorial/sqlmodel.md
+#  - tutorial/customize.md
 - Help FastCRUDAPI - Get Help: help.md
 markdown_extensions:
 - toc:
