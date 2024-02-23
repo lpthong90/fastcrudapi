@@ -70,10 +70,11 @@ book_router = CrudApiRouter(
 app.include_router(book_router)
 ```
 
+## OpenAPI
 
-
-
-
+<p align="center">
+    <img src="https://fastcrudapi.lpthong90.dev/img/openapi.png" alt="OpenAPI">
+</p>
 
 
 ## License
