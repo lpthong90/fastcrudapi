@@ -15,7 +15,6 @@
     </a>
     <a href="https://coverage-badge.samuelcolvin.workers.dev/redirect/lpthong90/fastcrudapi" target="_blank">
         <img src="https://coverage-badge.samuelcolvin.workers.dev/lpthong90/fastcrudapi.svg" alt="Coverage">
-    </a>
     <a href="https://pypi.org/project/fastcrudapi" target="_blank">
         <img src="https://img.shields.io/pypi/v/fastcrudapi?color=%2334D058&label=pypi%20package" alt="Package version">
     </a>
@@ -39,7 +38,6 @@
 The package helps to generate CRUD APIs for models based on FastAPI.
 
 ## Installation
-
 <div class="termy">
 
 ```console
@@ -52,7 +50,7 @@ Successfully installed fastcrudapi
 
 ## Basic Usage
 
-``` python
+```Python
 from fastapi import FastAPI
 from fastcrudapi import CrudApiRouter
 from pydantic import BaseModel
